@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "email": "sample@dev",
+      "password": "$2a$10$Vviu.6gs/PIqwcX4VDakNuWn/EmKieUH8FNlskgKmQfvDnvqplCmu",
+      "id": 1
+    },
+    {
+      "email": "dev@admin.me",
+      "password": "$2a$10$fPN9OW0zkgUX.jhMnIyvUOek5cB.ImX1n.AQcj2JT4OK7HJcVgzC6",
+      "id": 2
+    }
+  ],
+  "posts": [
+    {
+      "title": "Hello MOPCON!",
+      "userId": 1,
+      "id": 1
+    },
+    {
+      "title": "ya! 1665936846644",
+      "userId": "2",
+      "id": 2
+    },
+    {
+      "title": "ya! 1665937592623",
+      "userId": "2",
+      "id": 3
+    },
+    {
+      "title": "ya! 1665939015117",
+      "userId": "2",
+      "id": 4
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>CKEditor</title>
+  <script
+    src="https://cdn.ckeditor.com/ckeditor5/35.2.1/classic/ckeditor.js"></script>
+</head>
+
+<body>
+  <div id="editor">
+    <p>Here goes the initial content of the editor.</p>
+  </div>
+
+  <br />
+
+  <!-- <div
+      class="ck ck-content ck-editor__editable ck-rounded-corners ck-editor__editable_inline ck-blurred"
+      dir="ltr"
+      role="textbox"
+      aria-label="Editor editing area: main"
+      lang="en"
+      contenteditable="true"
+    >
+      <p>Some text.</p>
+      <p>4564654</p>
+    </div> -->
+
+  <div id="js-preview"></div>
+
+  <input id="js-set" type="button" value="SET" />
+
+  <script>
+    // const editor = document.querySelector('#editor');
+    const preview = document.querySelector('#js-preview');
+
+    // function processData() {
+    //   // getting data
+    //   const data = CKEDITOR.instances.content.getData()
+    //   alert(data);
+    // }
+
+    function getEditor(editor) {
+      // console.dir(editor);
+
+      const data = editor.getData();
+      console.log('getData:::', data);
+      // console.log('getData:::', editor.ui.contentsElement.getChild(0).getText());
+
+      // console.dir('editor >>> ', editor.ui);
+      // console.dir('editor >>> ', editor.ui.view);
+      // ck ck-content ck-editor__editable
+      // ck-rounded-corners ck-editor__editable_inline ck-blurred
+      // console.dir('editor >>> ', editor.ui.view.editable);
+      // console.dir('editor >>> ', editor.ui.view.editable.element);
+
+      const dataText = editor.ui.view.editable.element.innerText;
+      console.log('editor-innerText >>> ', dataText);
+
+      preview.innerHTML = data;
+      // preview.innerHTML = data;
+    }
+
+    function setEditor(editor) {
+      document
+        .querySelector('#js-set')
+        .addEventListener('click', () => getEditor(editor));
+
+      editor.setData('<p>Some text.</p>');
+
+      // editor.model.document.on('change:data', () => {
+      //   console.log('The data has changed!');
+      //   console.dir(editor.model);
+      // });
+    }
+
+    ClassicEditor.create(document.querySelector('#editor'))
+      .then((editor) => {
+        // console.log('editor:::', editor);
+
+        setEditor(editor);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  </script>
+</body>
+
+</html>

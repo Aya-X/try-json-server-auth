@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Dashboard</title>
+
+  <!-- Bootstrap5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+    crossorigin="anonymous" />
+</head>
+
+<body>
+  <nav>
+    <h1>
+      <a href="/admin-desk.html">這裡是主控台</a>
+    </h1>
+  </nav>
+
+  <!-- <input id="js-create" type="button" value="DEV_CREATE" /> -->
+
+  <hr />
+
+
+  <main class="container">
+    <a href="/admin-post-editor.html" class="block">新增文章</a>
+
+    <hr />
+
+    <h2>清單列表</h2>
+
+    <div id="app">
+      <!-- inject data from API -->
+      <pre>LOADING...</pre>
+    </div>
+  </main>
+
+  <pre id="msg"></pre>
+
+  <hr />
+
+  <footer>
+    <a href="/">回到前台首頁</a>
+    <a href="/dashboard.html">管理後台</a>
+  </footer>
+
+  <!-- end of DOM -->
+
+  <!-- Bootstrap5 JavaScript Bundle with Popper -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+    crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+
+  <script>
+    const BASE_URL = 'http://localhost:3000';
+    const BASE_POST_URL = `${BASE_URL}/api/posts`;
+
+    function takeTokenFromLocal() {
+      // const userId = localStorage.getItem('userId');
+      const AUTH = `Bearer ${localStorage.getItem('token')}`;
+
+      axios.defaults.headers.common.Authorization = AUTH;
+    }
+    /* end of takeTokenFromLocal() */
+
+    function createPost() {
+      const userId = localStorage.getItem('userId');
+      const AUTH = `Bearer ${localStorage.getItem('token')}`;
+      axios.defaults.headers.common.Authorization = AUTH;
+
+      const url = `${BASE_URL}/api/posts`;
+
+      const data = {
+        title: `test_${Date.now()}`,
+        body: null,
+        userId,
+      };
+
+
+      axios
+        .post(url, data)
+        .then(function (response) {
+          console.log('post:::', response);
+          console.log(JSON.stringify(response, null, 2));
+
+          msg.innerHTML = response.statusText;
+        })
+        .catch(function (error) {
+          console.log('error:::', error);
+          console.log(JSON.stringify(error, null, 2));
+
+          msg.innerHTML = error.response.data;
+        });
+      /*  end of axios */
+    }
+    /* end of createPost() */
+
+    function editPost(id) {
+      console.log('editPost:::', id);
+
+      const url = `${BASE_POST_URL}/${id}`;
+
+      const page = `/admin-post-editor.html?id=${id}`
+
+      console.log('url:::', url);
+      console.log('page:::', page);
+
+      window.location.replace(page);
+
+      // axios
+      //   .post(url)
+      //   .then(function (response) {
+      //     console.log('posts:::', response);
+      //     console.log(JSON.stringify(response, null, 2));
+
+      //     msg.innerHTML = response.statusText;
+      //   })
+      //   .catch(function (error) {
+      //     console.log('error:::', error);
+      //     console.log(JSON.stringify(error, null, 2));
+
+      //     msg.innerHTML = error.response.data;
+      //   });
+      /*  end of axios */
+    }
+    /* end of editPost(id) */
+
+    function deletePost(id) {
+      console.log('deletePost:::', id);
+
+      const url = `${BASE_POST_URL}/${id}`;
+
+      console.log(url);
+
+      axios
+        .delete(url)
+        .then(function (response) {
+          console.log('posts:::', response);
+          console.log(JSON.stringify(response, null, 2));
+
+          msg.innerHTML = response.statusText;
+        })
+        .catch(function (error) {
+          console.log('error:::', error);
+          console.log(JSON.stringify(error, null, 2));
+
+          msg.innerHTML = error.response.data;
+        });
+      /*  end of axios */
+    }
+    /* end of deletePost(id) */
+
+    function modifyPost(event) {
+      // console.dir(event);
+      const target = event.target;
+      const targetType = event.target.dataset.type;
+      console.log(target);
+      console.log('targetType:::', targetType);
+
+      const targetTag = event.target.closest('li');
+      const targetId = targetTag.dataset.id;
+      const targetIdInt = Number(targetId);
+      console.log('targetId:::', typeof targetId);
+      console.log('targetIdInt:::', targetIdInt);
+
+      if (targetType === 'DELETE') {
+        return deletePost(targetIdInt);
+      }
+
+      if (targetType === 'EDIT') {
+        return editPost(targetIdInt);
+      }
+    }
+    /* end of modifyPost() */
+
+    function postsTemplate(posts, template = '<ul class="js-post-list">') {
+      posts.forEach((post) => {
+        const article = post.body ? post.body : '';
+
+        template += `
+          <li data-id='${post.id}'>
+            <div>
+              <code>${post.id}</code>
+              <p>${post.title}</p>
+
+              <article>${article}</article>              
+
+              <input data-type="DELETE" class="js-delete" type="button" value="DELETE">
+              <input data-type="EDIT" class="js-edit" type="button" value="EDIT">
+            </div>
+          </li>
+        `;
+      });
+
+      template += '</ul>';
+
+      return template;
+    }
+    /* end of postsTemplate() */
+
+    function getPosts() {
+      const url = `${BASE_URL}/api/posts`;
+
+      axios
+        .get(url)
+        .then(function (response) {
+          // console.log('posts:::', response);
+          // console.log(JSON.stringify(response, null, 2));
+
+          app.innerHTML = postsTemplate(response.data);
+
+          document
+            .querySelector('.js-post-list')
+            .addEventListener('click', (e) => modifyPost(e));
+        })
+        .catch(function (error) {
+          console.log('error:::', error);
+          console.log(JSON.stringify(error, null, 2));
+
+          msg.innerHTML = error.response.data;
+        });
+      /*  end of axios */
+    }
+
+    function init() {
+      getPosts();
+      takeTokenFromLocal();
+
+      document
+        .querySelector('#js-create')
+        .addEventListener('click', () => createPost());
+    }
+
+    init();
+  </script>
+
+  <!-- <script type="module" src="src/main.js"></script> -->
+  <!-- end of script -->
+</body>
+
+</html>

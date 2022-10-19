@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Login | Dashboard</title>
+
+  <!-- Bootstrap5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+    crossorigin="anonymous" />
+</head>
+
+<body>
+  <nav>
+    <h1>
+      <a href="/dashboard.html">後台</a>
+    </h1>
+  </nav>
+
+  <hr>
+
+  <main class="container">
+    <h2>後台登入</h2>
+
+    <!-- #TODO: get input value pass to fn -->
+    <form>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1"
+          aria-describedby="emailHelp" placeholder="Enter email" />
+
+        <small id="emailHelp" class="form-text text-muted">We'll never share
+          your email with anyone else.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1"
+          placeholder="Password" />
+      </div>
+
+      <!-- <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+      <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div> -->
+
+      <input id="js-login" type="button" value="Login" />
+
+      <!-- <button id="js-signup" type="submit" class="btn btn-primary">
+      Submit
+    </button> -->
+    </form>
+  </main>
+
+  <pre id="msg"></pre>
+
+  <footer>
+    <a href="/">回到前台首頁</a>
+    <a href="/dashboard.html">管理後台</a>
+  </footer>
+
+  <!-- end of DOM -->
+
+  <!-- Bootstrap5 JavaScript Bundle with Popper -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+    crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+
+  <script>
+    const BASE_URL = 'http://localhost:3000';
+
+    function saveUserToLocal({ accessToken, user }) {
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('userId', user.id);
+    }
+    /* end of saveUserToLocal() */
+
+    function login() {
+      const url = `${BASE_URL}/login`;
+      const data = {
+        email: 'dev@admin.me',
+        password: '12345678',
+      };
+
+      axios
+        .post(url, data)
+        .then(function (response) {
+          console.log('signup:::', response);
+          console.log(JSON.stringify(response, null, 2));
+
+          saveUserToLocal(response.data);
+
+          msg.innerHTML = response.statusText;
+
+          if (response.statusText === "OK") {
+            window.location.replace('/admin-desk.html');
+          }
+          /* end of response.OK */
+        })
+        .catch(function (error) {
+          console.log('error:::', error);
+          console.log(JSON.stringify(error, null, 2));
+
+          msg.innerHTML = error.response.data;
+        });
+      /*  end of axios */
+    }
+    /* end of login() */
+
+    document.querySelector('#js-login').addEventListener('click', () => login());
+  </script>
+  <!-- <script type="module" src="src/main.js"></script> -->
+  <!-- end of script -->
+</body>
+
+</html>

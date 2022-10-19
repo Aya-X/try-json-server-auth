@@ -31,11 +31,23 @@ function createPost() {
     });
   /*  end of axios */
 }
+/* end of createPost() */
+
+function takeTokenFromLocal() {
+  const userId = localStorage.getItem('userId');
+  const AUTH = `Bearer ${localStorage.getItem('token')}`;
+
+  axios.defaults.headers.common.Authorization = AUTH;
+}
+/* end of takeTokenFromLocal() */
 
 function saveUserToLocal({ accessToken, user }) {
   localStorage.setItem('token', accessToken);
   localStorage.setItem('userId', user.id);
 }
+/* end of saveUserToLocal() */
+
+
 
 function login() {
   const url = `${BASE_URL}/login`;
@@ -62,6 +74,7 @@ function login() {
     });
   /*  end of axios */
 }
+/* end of login() */
 
 function signup() {
   const url = `${BASE_URL}/signup`;
@@ -78,7 +91,6 @@ function signup() {
 
       saveUserToLocal(response.data);
 
-
       msg.innerHTML = response.statusText;
     })
     .catch(function (error) {
@@ -89,6 +101,7 @@ function signup() {
     });
   /*  end of axios */
 }
+/* end of signup() */
 
 function postsTemplate(posts, template = '') {
   posts.forEach((post) => {

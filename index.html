@@ -1,29 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant-TW">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Document</title>
+  <title>HOME</title>
+
+  <!-- Bootstrap5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+    crossorigin="anonymous" />
 </head>
 
 <body>
-  <div id="app"></div>
+  <nav>
+    <h1>
+      <a href="/">這是前台首頁</a>
+    </h1>
+  </nav>
 
-  <div id="msg"></div>
+  <hr />
 
-  <input id="js-signup" type="button" value="Signup">
+  <main class="container">
+    <h2>最新消息</h2>
 
-  <input id="js-login" type="button" value="Login">
+    <div id="app">
+      <!-- inject data from API -->
+      <pre>LOADING...</pre>
+    </div>
+  </main>
 
-  <input id="js-create" type="button" value="Create">
+  <pre id="msg"></pre>
+
+  <hr />
+
+  <footer>
+    <a href="/dashboard.html">後台管理</a>
+  </footer>
   <!-- end of DOM -->
+
+  <!-- Bootstrap5 JavaScript Bundle with Popper -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+    crossorigin="anonymous"></script>
 
   <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
 
-  <script src="src/main.js"></script>
+  <script>
+    const BASE_URL = 'http://localhost:3000';
+
+    function postsTemplate(posts, template = '<ul class="">') {
+      posts.forEach((post) => {
+        const article = post.body ? post.body : '';
+
+        template += `
+          <li data-id='${post.id}'  class="card">
+            <div class="card-body">
+              <code>${post.id}</code>
+              <p>${post.title}</p>
+
+              <article>${article}</article>              
+              
+            </div>
+          </li>
+        `;
+      });
+
+      template += '</ul>';
+
+      return template;
+    }
+    /* end of postsTemplate() */
+
+    function getPosts() {
+      const url = `${BASE_URL}/api/posts`;
+
+      axios
+        .get(url)
+        .then(function (response) {
+          // console.log('posts:::', response);
+          // console.log(JSON.stringify(response, null, 2));
+
+          app.innerHTML = postsTemplate(response.data);
+        })
+        .catch(function (error) {
+          console.log('error:::', error);
+          console.log(JSON.stringify(error, null, 2));
+
+          msg.innerHTML = error.response.status;
+        });
+      /*  end of axios */
+    }
+    /* end of getPosts() */
+
+    function init() {
+      getPosts();
+    }
+    /* end of init() */
+
+    // MAIN
+    init();
+  </script>
+
+  <!-- <script type="module" src="src/main.js"></script> -->
   <!-- end of script -->
 </body>
 

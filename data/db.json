@@ -9,16 +9,6 @@
       "email": "dev@admin.me",
       "password": "$2a$10$fPN9OW0zkgUX.jhMnIyvUOek5cB.ImX1n.AQcj2JT4OK7HJcVgzC6",
       "id": 2
-    },
-    {
-      "email": "efwafw@jiojo",
-      "password": "$2a$10$X1KdL68JOO8rTFwNHxVPE.swMRMEgWhi4kV0sppOnfrW88GbtZgu.",
-      "id": 3
-    },
-    {
-      "email": "efwafw@jiojoereg",
-      "password": "$2a$10$pGDZ//1I.7tSUvXJT2e3IeD4Z1X5itecPZblR5ZXxQHnVxSy5VTC.",
-      "id": 4
     }
   ],
   "posts": [
@@ -46,6 +36,20 @@
       "plainText": "早安\n午安\n晚安",
       "userId": "2",
       "id": 4
+    },
+    {
+      "title": "_1666351928937",
+      "body": "<p>Here goes the initial content of the editor.eargfeaf</p>",
+      "plainText": "Here goes the initial content of the editor.eargfeaf",
+      "userId": "2",
+      "id": 5
+    },
+    {
+      "title": "qfr3qaw34rfq3rfr3qd_1666351966771_1666351978927",
+      "body": "<p>&nbsp;</p><p>Here goq3d2e3es the initial content of the editor.e4rtfqaer</p><p>&nbsp;</p>",
+      "plainText": "\n\n\nHere goq3d2e3es the initial content of the editor.e4rtfqaer\n\n\n",
+      "userId": "2",
+      "id": 6
     }
   ]
 }

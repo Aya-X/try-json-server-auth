@@ -28,18 +28,18 @@
   <main class="container">
     <h2>最新消息</h2>
 
-    <div id="app">
+    <ul class="js-post-list">
       <!-- inject data from API -->
       <pre>LOADING...</pre>
-    </div>
+    </ul>
   </main>
 
-  <pre id="msg"></pre>
+  <pre class="js-msg"></pre>
 
   <hr />
 
   <footer>
-    <a href="/dashboard.html">後台管理</a>
+    <a href="/admin">後台管理</a>
   </footer>
   <!-- end of DOM -->
 
@@ -51,11 +51,32 @@
 
   <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
 
+  <!-- MAIN -->
   <script>
     const BASE_URL = 'http://localhost:3000';
+    const BASE_POST_URL = `${BASE_URL}/api/posts`;
 
-    function postsTemplate(posts, template = '<ul class="">') {
-      posts.forEach((post) => {
+    const domMsg = document.querySelector('.js-msg');
+    const domPostList = document.querySelector('.js-post-list');
+    /* end of definition */
+
+    /**
+     * #Step-2: print html with post list
+     * @param { Array } posts
+     * @param { String } template
+     * @returns { String } htmlContent
+     */
+    function postsTemplate(posts, template = '<ul class="js-post-list">') {
+      /*
+       * #NOTE: Array().forEach() do NOT `return`
+       */
+      posts.forEach(function (post) {
+        /**
+         * - IF post.body === null
+         *   THEN return '' to display nothing
+         *
+         * @type { String } article
+         */
         const article = post.body ? post.body : '';
 
         template += `
@@ -64,40 +85,45 @@
               <code>${post.id}</code>
               <p>${post.title}</p>
 
-              <article>${article}</article>              
-              
+              <article>${article}</article>
+
             </div>
           </li>
         `;
       });
-
+      /* end of posts.forEach() */
       template += '</ul>';
 
       return template;
     }
     /* end of postsTemplate() */
 
+    /**
+     * #Step-1: `GET` data from API
+     */
     function getPosts() {
-      const url = `${BASE_URL}/api/posts`;
+      const url = `${BASE_POST_URL}`;
 
       axios
         .get(url)
         .then(function (response) {
-          // console.log('posts:::', response);
-          // console.log(JSON.stringify(response, null, 2));
+          // console.log('posts:::', JSON.stringify(response, null, 2));
+          const htmlContent = postsTemplate(response.data);
 
-          app.innerHTML = postsTemplate(response.data);
+          domPostList.innerHTML = htmlContent;
         })
         .catch(function (error) {
-          console.log('error:::', error);
-          console.log(JSON.stringify(error, null, 2));
+          console.log('error:::', JSON.stringify(error, null, 2));
 
-          msg.innerHTML = error.response.status;
+          domMsg.innerHTML = error.response.status;
         });
       /*  end of axios */
     }
     /* end of getPosts() */
 
+    /**
+     * #Step-0: after page refresh
+     */
     function init() {
       getPosts();
     }
@@ -106,7 +132,6 @@
     // MAIN
     init();
   </script>
-
   <!-- <script type="module" src="src/main.js"></script> -->
   <!-- end of script -->
 </body>

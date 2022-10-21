@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Document</title>
+
+  <style>
+    /* Overall Style */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: gray;
+      /* background-color: black; */
+    }
+
+    /* Button Style */
+    .button {
+      position: relative;
+
+      padding: 10px 20px;
+      border: none;
+
+      letter-spacing: 3px;
+      font-size: 30px;
+      font-weight: bold;
+      font-family: sans-serif;
+      text-transform: uppercase;
+
+      background-color: transparent;
+      /* color hover effect fade in */
+      color: white;
+      transition: color 0.5s;
+    }
+
+    .button:hover {
+      color: black;
+    }
+
+    .button:focus {
+      outline: none;
+    }
+
+    .button::before,
+    .button::after {
+      /* line styles */
+      position: absolute;
+      content: '';
+
+      height: 100%;
+      width: 5px;
+
+      background-color: white;
+      opacity: 0.5;
+      z-index: -1;
+      transition: all 0.5s cubic-bezier(0.8, -0.5, 0.26, 1.3);
+    }
+
+    .button::before {
+      /* left line position */
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+    }
+
+    .button::after {
+      /* right line position */
+      top: 0;
+      right: 0;
+      transform: translateX(100%);
+    }
+
+    .button:hover::before,
+    .button:hover::after {
+      /* position `-100`-`0`-`100` */
+      width: 100%;
+      /* transform: translateX(0%); */
+      transform: translateX(0%) skewX(30deg);
+    }
+  </style>
+</head>
+
+<body>
+  <button type="button" class="button">button</button>
+</body>
+
+</html>

@@ -1,15 +1,17 @@
 {
   "name": "try-json-server-auth",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/index.html",
+  "description": "",    
   "scripts": {
-    "start": "nodemon server",
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "json-server": "^0.17.0",
     "json-server-auth": "^2.1.0",
+    "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.20"
   },
   "repository": {

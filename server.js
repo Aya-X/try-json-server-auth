@@ -7,6 +7,9 @@ const router = jsonServer.router('data/db.json');
 // /!\ Bind the router db to the app
 app.db = router.db;
 
+/**
+ * 
+ */
 const rules = auth.rewriter({
   // Permission rules
   // users: 600,
